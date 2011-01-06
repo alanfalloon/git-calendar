@@ -1,0 +1,23 @@
+Name:                git-calendar
+Version:             0.1
+Synopsis:
+        Use Git reflogs to create a calendar noting when projects were under development
+License:             GPL-3
+License-file:        LICENSE
+Author:              Alan Falloon
+Maintainer:          alan.falloon@gmail.com
+Stability:           Experimental
+Category:            Development
+Build-type:          Simple
+Cabal-version:       >=1.2
+Executable git-calendar
+  Main-is: Main.hs
+  Build-depends:
+    base >= 4,
+    containers >= 0.3,
+    directory >= 1,
+    filepath >= 1.1,
+    haskell98,
+    old-locale >= 1,
+    time >= 1.1,
+    unix >= 2.4
