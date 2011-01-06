@@ -6,6 +6,7 @@ import Data.Set (Set)
 import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.Format
+import Data.Time.LocalTime
 import Data.Version (showVersion)
 import Paths_git_calendar (version)
 import System.Console.GetOpt
@@ -33,7 +34,7 @@ printDayProjects dayprjs = do
   putStrLn day
   mapM_ printProject dayprjs
     where
-      day = showGregorian $ utctDay $ time $ head $ head dayprjs
+      day = showGregorian $ localDay $ time $ head $ head dayprjs
 
 printProject :: [Event] -> IO ()
 printProject [Event {time, project}] =
@@ -60,16 +61,17 @@ parseLog proj branch log = Set.fromList events
       events = map (parseEvent proj branch) $ lines log
 
 parseEvent :: String -> String -> String -> Event
-parseEvent proj branch line = Event time proj branch desc'
+parseEvent proj branch line = Event time' proj branch desc'
     where
       (Just line') = stripPrefix "> " $ dropWhile (/= '>') line
       (timestamp, desc) = span (/= '\t') line'
       time = readTime defaultTimeLocale "%s %z" timestamp
+      time' = zonedTimeToLocalTime time
       desc' = case desc of
                 '\t':d -> d
                 d -> d
 
-data Event = Event { time :: UTCTime
+data Event = Event { time :: LocalTime
                    , project :: String
                    , branch :: String
                    , description :: String
@@ -77,7 +79,7 @@ data Event = Event { time :: UTCTime
              deriving (Show, Ord, Eq)
 
 sameDay,sameProject :: Event -> Event -> Bool
-sameDay (Event {time=t1}) (Event {time=t2}) = utctDay t1 == utctDay t2
+sameDay (Event {time=t1}) (Event {time=t2}) = localDay t1 == localDay t2
 sameProject (Event {project=p1}) (Event {project=p2}) = p1 == p2
 
 getProject :: Monad m => FilePath -> IO (m (String,FilePath))
