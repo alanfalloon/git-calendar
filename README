@@ -1,0 +1,47 @@
+git-calendar
+============
+
+Ever wonder what you were working on a few months ago? Run
+git-calendar, passing it all the paths to your repositories, and it
+will scan all the reflogs (what is shown by 'git log -g') and it shows
+you a chronological list of the projects you worked in, with the times
+you made changes to your repository.
+
+Installing
+----------
+
+git-calendar is written in Haskell, you will need to install the
+Haskell Platform found at http://hackage.haskell.org/platform/
+
+Then to build git-calendar:
+> git clone git://github.com/alanfalloon/git-calendar.git
+> cd git-calendar
+> cabal install
+
+That is the short version, but Cabal supports a number of options. For
+more information see http://www.haskell.org/cabal/
+
+Example
+-------
+
+> cd ~/git
+> git-calendar git-calendar dateutils diff-git.el magit wordjunk
+2010-04-27
+	20:52:01-20:52:01	wordjunk
+2010-05-13
+	19:30:49-21:33:21	dateutils
+2010-05-14
+	00:28:58-00:28:58	dateutils
+2010-06-29
+	15:01:15-16:35:31	diff-git.el
+	17:52:10-17:52:10	magit
+2010-06-30
+	01:02:11-01:34:00	diff-git.el
+	13:33:06-13:43:13	magit
+	14:17:42		diff-git.el
+2010-07-01
+	00:14:25-00:15:27	diff-git.el
+2011-01-05
+	22:25:50		git-calendar
+2011-01-06
+	02:00:55-02:51:48	git-calendar
